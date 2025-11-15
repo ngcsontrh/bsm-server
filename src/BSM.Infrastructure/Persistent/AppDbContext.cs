@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BSM.Infrastructure.Persistent;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options)
-    : IdentityDbContext<AppUser, AppRole, Guid, AppUserClaim, AppUserRole, AppUserLogin, AppRoleClaim, AppUserToken,
-        AppUserPasskey>(options)
+    : IdentityDbContext<AppUser, AppRole, Guid, AppUserClaim, AppUserRole, AppUserLogin, AppRoleClaim, AppUserToken>(options)
 {
     protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
     {
