@@ -8,20 +8,17 @@ public class BookConfiguration : IEntityTypeConfiguration<BookEntity>
 {
     public void Configure(EntityTypeBuilder<BookEntity> builder)
     {
-        builder.OwnsOne(x => x.ISBN, isbnBuilder =>
-        {
-            isbnBuilder.Property(i => i.Value)
-                .HasColumnName("ISBN")
-                .IsUnicode(false);
-            isbnBuilder.HasIndex(i => i.Value);
-        });
-        builder.ComplexProperty(x => x.CoverImage, x => x.ToJson());
+        builder.Property(x => x.ISBN).IsUnicode(false);
+        builder.ComplexProperty(x => x.CoverImage, x => x.ToJson("CoverImage"));
         builder.OwnsOne(x => x.Price, priceBuilder =>
         {
             priceBuilder.Property(p => p.Amount)
-                .HasColumnName("Price");
-            priceBuilder.Property(p => p.CurrencyCode)
-                .HasColumnName("PriceCurrencyCode");
+                .HasColumnName("PriceAmount");
+            priceBuilder.Property(p => p.Currency)
+                .HasColumnName("PriceCurrency");
         });
+        
+        builder.HasIndex(x => x.ISBN).IsUnique();
+        builder.HasIndex(x => x.PublisherId);
     }
 }

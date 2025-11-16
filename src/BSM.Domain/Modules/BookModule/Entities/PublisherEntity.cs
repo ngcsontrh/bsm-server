@@ -1,34 +1,42 @@
 ﻿using BSM.Domain.Commons.Contracts;
 using BSM.Domain.Commons.Entities;
+using BSM.Domain.Commons.Exceptions;
 using BSM.Domain.Modules.BookModule.ValueObjects;
 
 namespace BSM.Domain.Modules.BookModule.Entities;
 
 public class PublisherEntity : EntityBase, IAggregateRoot
 {
-    public string Name { get; private set; }
-    public AddressObject Address { get; private set; }
+    public string Name { get; private set; } = null!;
+    public AddressObject? Address { get; private set; }
 
     private PublisherEntity() { }
-    
-    private PublisherEntity(string name, AddressObject address)
+
+    public static PublisherEntity Create(string name)
     {
-        Name = name;
+        ValidateName(name);
+
+        var publisher = new PublisherEntity
+        {
+            Id = Guid.CreateVersion7(),
+            CreatedAt = DateTime.UtcNow,
+            Name = name
+        };
+
+        return publisher;
+    }
+
+    public void UpdateAddress(AddressObject? address)
+    {
         Address = address;
     }
 
-    public static PublisherEntity Create(string name, AddressObject address)
+    private static void ValidateName(string name)
     {
-        return new PublisherEntity(name, address);
-    }
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException("Publisher name cannot be empty");
 
-    public void ChangeName(string name)
-    {
-        Name = name;
-    }
-    
-    public void ChangeAddress(AddressObject address)
-    {
-        Address = address;
+        if (name.Length > 255)
+            throw new DomainException("Publisher name cannot exceed 255 characters");
     }
 }

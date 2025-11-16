@@ -8,6 +8,6 @@ public class AuthorConfiguration : IEntityTypeConfiguration<AuthorEntity>
 {
     public void Configure(EntityTypeBuilder<AuthorEntity> builder)
     {
-        builder.ComplexProperty(x => x.Image, x => x.ToJson());
+        builder.ComplexProperty(x => x.Image, x => x.ToJson("Image"));
     }
 }

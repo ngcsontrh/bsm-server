@@ -3,7 +3,7 @@ using BSM.Domain.Modules.ContentModule.Entities;
 
 namespace BSM.Domain.Modules.ContentModule.Repositories;
 
-public interface ICommentRepository : IRepositoryBase<CommentEntity>
+public interface ICommentArRepository : IArRepository<CommentEntity>
 {
     
 }

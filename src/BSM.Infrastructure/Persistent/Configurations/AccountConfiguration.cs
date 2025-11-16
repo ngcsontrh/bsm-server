@@ -8,7 +8,7 @@ public class AccountConfiguration : IEntityTypeConfiguration<AccountEntity>
 {
     public void Configure(EntityTypeBuilder<AccountEntity> builder)
     {
-        builder.HasOne(x => x.UserInformation)
+        builder.HasOne<UserInformationEntity>(x => x.UserInformation)
             .WithOne()
             .HasForeignKey<UserInformationEntity>(x => x.AccountId);
     }

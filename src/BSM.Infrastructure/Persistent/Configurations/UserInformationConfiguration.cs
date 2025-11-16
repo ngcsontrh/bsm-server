@@ -8,15 +8,8 @@ public class UserInformationConfiguration : IEntityTypeConfiguration<UserInforma
 {
     public void Configure(EntityTypeBuilder<UserInformationEntity> builder)
     {
-        builder.OwnsOne(x => x.Code, codeBuilder =>
-        {
-            codeBuilder.Property(x => x.Value).HasColumnName("Code").IsUnicode(false);
-            codeBuilder.HasIndex(x => x.Value).IsUnique();
-        });
-        builder.OwnsOne(x => x.IdentityNumber, identityNumberBuilder =>
-        {
-            identityNumberBuilder.Property(x => x.Value).HasColumnName("IdentityNumber").IsUnicode(false);
-        });
-        builder.HasIndex(x => x.AccountId).IsUnique();
+        builder.Property(x => x.Code).IsUnicode(false);
+        builder.HasIndex(x => x.Code).IsUnique();
+        builder.HasIndex(x => x.AccountId);
     }
 }

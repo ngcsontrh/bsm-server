@@ -83,9 +83,14 @@ namespace BSM.Infrastructure.Migrations
                     b.Property<Guid>("AuthorId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("BookEntityId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("BookId", "AuthorId");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("BookEntityId");
 
                     b.ToTable("BookAuthorEntity");
                 });
@@ -122,6 +127,11 @@ namespace BSM.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ISBN")
+                        .IsRequired()
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(900)");
 
                     b.Property<DateTime?>("LastModifiedAt")
                         .HasColumnType("datetime2");
@@ -162,6 +172,11 @@ namespace BSM.Infrastructure.Migrations
                         });
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ISBN")
+                        .IsUnique();
+
+                    b.HasIndex("PublisherId");
 
                     b.ToTable("Books");
                 });
@@ -229,25 +244,6 @@ namespace BSM.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.ComplexProperty(typeof(Dictionary<string, object>), "Address", "BSM.Domain.Modules.BookModule.Entities.PublisherEntity.Address#AddressObject", b1 =>
-                        {
-                            b1.IsRequired();
-
-                            b1.Property<string>("Country")
-                                .IsRequired();
-
-                            b1.Property<string>("District")
-                                .IsRequired();
-
-                            b1.Property<string>("Province")
-                                .IsRequired();
-
-                            b1.Property<string>("Street")
-                                .IsRequired();
-
-                            b1.ToJson("Address");
-                        });
 
                     b.HasKey("Id");
 
@@ -525,6 +521,11 @@ namespace BSM.Infrastructure.Migrations
                     b.Property<DateOnly?>("BirthDate")
                         .HasColumnType("date");
 
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(900)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -550,6 +551,9 @@ namespace BSM.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId")
+                        .IsUnique();
+
+                    b.HasIndex("Code")
                         .IsUnique();
 
                     b.ToTable("UserInformations");
@@ -666,8 +670,13 @@ namespace BSM.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BSM.Domain.Modules.BookModule.Entities.BookEntity", "Book")
+                    b.HasOne("BSM.Domain.Modules.BookModule.Entities.BookEntity", null)
                         .WithMany("BookAuthors")
+                        .HasForeignKey("BookEntityId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("BSM.Domain.Modules.BookModule.Entities.BookEntity", "Book")
+                        .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -680,7 +689,7 @@ namespace BSM.Infrastructure.Migrations
             modelBuilder.Entity("BSM.Domain.Modules.BookModule.Entities.BookCategoryEntity", b =>
                 {
                     b.HasOne("BSM.Domain.Modules.BookModule.Entities.BookEntity", "Book")
-                        .WithMany("BookCategories")
+                        .WithMany()
                         .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -698,27 +707,6 @@ namespace BSM.Infrastructure.Migrations
 
             modelBuilder.Entity("BSM.Domain.Modules.BookModule.Entities.BookEntity", b =>
                 {
-                    b.OwnsOne("BSM.Domain.Modules.BookModule.ValueObjects.ISBNObject", "ISBN", b1 =>
-                        {
-                            b1.Property<Guid>("BookEntityId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .IsUnicode(false)
-                                .HasColumnType("varchar(900)")
-                                .HasColumnName("ISBN");
-
-                            b1.HasKey("BookEntityId");
-
-                            b1.HasIndex("Value");
-
-                            b1.ToTable("Books");
-
-                            b1.WithOwner()
-                                .HasForeignKey("BookEntityId");
-                        });
-
                     b.OwnsOne("BSM.Domain.Modules.BookModule.ValueObjects.MoneyObject", "Price", b1 =>
                         {
                             b1.Property<Guid>("BookEntityId")
@@ -726,12 +714,12 @@ namespace BSM.Infrastructure.Migrations
 
                             b1.Property<decimal>("Amount")
                                 .HasColumnType("decimal(18,2)")
-                                .HasColumnName("Price");
+                                .HasColumnName("PriceAmount");
 
-                            b1.Property<string>("CurrencyCode")
+                            b1.Property<string>("Currency")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)")
-                                .HasColumnName("PriceCurrencyCode");
+                                .HasColumnName("PriceCurrency");
 
                             b1.HasKey("BookEntityId");
 
@@ -741,10 +729,45 @@ namespace BSM.Infrastructure.Migrations
                                 .HasForeignKey("BookEntityId");
                         });
 
-                    b.Navigation("ISBN")
-                        .IsRequired();
-
                     b.Navigation("Price");
+                });
+
+            modelBuilder.Entity("BSM.Domain.Modules.BookModule.Entities.PublisherEntity", b =>
+                {
+                    b.OwnsOne("BSM.Domain.Modules.BookModule.ValueObjects.AddressObject", "Address", b1 =>
+                        {
+                            b1.Property<Guid>("PublisherEntityId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("Country");
+
+                            b1.Property<string>("District")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("District");
+
+                            b1.Property<string>("Province")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("Province");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)")
+                                .HasColumnName("Street");
+
+                            b1.HasKey("PublisherEntityId");
+
+                            b1.ToTable("Publishers");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PublisherEntityId");
+                        });
+
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("BSM.Domain.Modules.ContentModule.Entities.BlogEntity", b =>
@@ -778,12 +801,10 @@ namespace BSM.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BSM.Domain.Modules.ContentModule.Entities.CommentEntity", "Parent")
+                    b.HasOne("BSM.Domain.Modules.ContentModule.Entities.CommentEntity", null)
                         .WithMany()
                         .HasForeignKey("ParentId")
                         .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("Parent");
                 });
 
             modelBuilder.Entity("BSM.Domain.Modules.ContentModule.Entities.EventEntity", b =>
@@ -816,52 +837,6 @@ namespace BSM.Infrastructure.Migrations
                         .HasForeignKey("BSM.Domain.Modules.IdentityModule.Entities.UserInformationEntity", "AccountId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.OwnsOne("BSM.Domain.Modules.IdentityModule.ValueObjects.IdentityNumberObject", "IdentityNumber", b1 =>
-                        {
-                            b1.Property<Guid>("UserInformationEntityId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .IsUnicode(false)
-                                .HasColumnType("varchar(max)")
-                                .HasColumnName("IdentityNumber");
-
-                            b1.HasKey("UserInformationEntityId");
-
-                            b1.ToTable("UserInformations");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserInformationEntityId");
-                        });
-
-                    b.OwnsOne("BSM.Domain.Modules.IdentityModule.ValueObjects.UniqueCodeObject", "Code", b1 =>
-                        {
-                            b1.Property<Guid>("UserInformationEntityId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .IsUnicode(false)
-                                .HasColumnType("varchar(900)")
-                                .HasColumnName("Code");
-
-                            b1.HasKey("UserInformationEntityId");
-
-                            b1.HasIndex("Value")
-                                .IsUnique();
-
-                            b1.ToTable("UserInformations");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserInformationEntityId");
-                        });
-
-                    b.Navigation("Code")
-                        .IsRequired();
-
-                    b.Navigation("IdentityNumber");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -918,14 +893,11 @@ namespace BSM.Infrastructure.Migrations
             modelBuilder.Entity("BSM.Domain.Modules.BookModule.Entities.BookEntity", b =>
                 {
                     b.Navigation("BookAuthors");
-
-                    b.Navigation("BookCategories");
                 });
 
             modelBuilder.Entity("BSM.Domain.Modules.IdentityModule.Entities.AccountEntity", b =>
                 {
-                    b.Navigation("UserInformation")
-                        .IsRequired();
+                    b.Navigation("UserInformation");
                 });
 #pragma warning restore 612, 618
         }

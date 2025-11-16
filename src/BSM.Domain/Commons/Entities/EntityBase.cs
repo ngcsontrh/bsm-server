@@ -13,7 +13,7 @@ public class EntityBase : IEntityBase, IAuditable
     public Guid? LastModifierId { get; protected set; }
     public string? LastModifierName { get; protected set; }
     
-    private readonly List<DomainEvent> _domainEvents = new();
+    private readonly List<DomainEvent> _domainEvents = [];
     public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     public void AddDomainEvent(DomainEvent domainEvent)

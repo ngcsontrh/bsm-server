@@ -4,9 +4,9 @@ namespace BSM.Domain.Modules.BookModule.ValueObjects;
 
 public record ImageObject
 {
-    public string Name { get; init; }
-    public string Url { get; init; }
-    public string MimeType { get; init; }
+    public string Name { get; init; } = null!;
+    public string Url { get; init; } = null!;
+    public string MimeType { get; init; } = null!;
     public string? AltText { get; init; }
     
     private ImageObject() { }

@@ -10,7 +10,7 @@ public class BookCategoryConfiguration : IEntityTypeConfiguration<BookCategoryEn
     {
         builder.HasKey(x => new { x.BookId, x.CategoryId });
         builder.HasOne(x => x.Book)
-            .WithMany(x => x.BookCategories)
+            .WithMany()
             .HasForeignKey(x => x.BookId);
         builder.HasOne(x => x.Category)
             .WithMany()

@@ -114,8 +114,8 @@ namespace BSM.Infrastructure.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PublicationYear = table.Column<int>(type: "int", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    PriceCurrencyCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PriceAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    PriceCurrency = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PublisherId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -176,13 +176,16 @@ namespace BSM.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Province = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatorName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastModifiedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastModifierId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    LastModifierName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    LastModifierName = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -304,7 +307,6 @@ namespace BSM.Infrastructure.Migrations
                     Code = table.Column<string>(type: "varchar(900)", unicode: false, nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BirthDate = table.Column<DateOnly>(type: "date", nullable: true),
-                    IdentityNumber = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatorName = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -361,7 +363,8 @@ namespace BSM.Infrastructure.Migrations
                 columns: table => new
                 {
                     BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BookEntityId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -370,6 +373,12 @@ namespace BSM.Infrastructure.Migrations
                         name: "FK_BookAuthorEntity_Authors_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Authors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_BookAuthorEntity_Books_BookEntityId",
+                        column: x => x.BookEntityId,
+                        principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -449,6 +458,11 @@ namespace BSM.Infrastructure.Migrations
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BookAuthorEntity_BookEntityId",
+                table: "BookAuthorEntity",
+                column: "BookEntityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BookCategoryEntity_CategoryId",
                 table: "BookCategoryEntity",
                 column: "CategoryId");
@@ -456,7 +470,13 @@ namespace BSM.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Books_ISBN",
                 table: "Books",
-                column: "ISBN");
+                column: "ISBN",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_PublisherId",
+                table: "Books",
+                column: "PublisherId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_BlogId",

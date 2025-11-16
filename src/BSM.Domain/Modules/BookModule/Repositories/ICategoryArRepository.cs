@@ -3,7 +3,7 @@ using BSM.Domain.Modules.BookModule.Entities;
 
 namespace BSM.Domain.Modules.BookModule.Repositories;
 
-public interface IPublisherRepository : IRepositoryBase<PublisherEntity>
+public interface ICategoryArRepository : IArRepository<BookEntity>
 {
     
 }

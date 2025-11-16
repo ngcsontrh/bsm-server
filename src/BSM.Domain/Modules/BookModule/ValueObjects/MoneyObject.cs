@@ -5,19 +5,20 @@ namespace BSM.Domain.Modules.BookModule.ValueObjects;
 public record MoneyObject
 {
     public decimal Amount { get; init; }
-    public string CurrencyCode { get; init; }
-
-    private  MoneyObject() { }
+    public string Currency { get; init; } = null!;
     
-    private MoneyObject(decimal amount, string currencyCode)
+    private MoneyObject() { }
+
+    private MoneyObject(decimal amount, string currency)
     {
         Amount = amount;
-        CurrencyCode = currencyCode;
+        Currency = currency;
     }
-    
-    public static MoneyObject Create(decimal amount, string currencyCode)
+
+    public static MoneyObject Create(decimal value, string currency)
     {
-        if (amount < 0) throw new DomainException("Amount cannot be negative");
-        return new MoneyObject(amount, currencyCode);
+        if (value < 0) throw new DomainException("Money cannot be negative");
+        if (string.IsNullOrWhiteSpace(currency)) throw new DomainException("Currency cannot be empty");
+        return new MoneyObject(value, currency);
     }
 }

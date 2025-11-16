@@ -12,6 +12,10 @@ public class CommentConfiguration : IEntityTypeConfiguration<CommentEntity>
             .WithMany()
             .HasForeignKey(b => b.BlogId);
         
+        builder.HasMany<CommentEntity>()
+            .WithOne()
+            .HasForeignKey(b => b.ParentId);
+        
         builder.HasIndex(x => x.BlogId);
         builder.HasIndex(x => x.ParentId);
     }

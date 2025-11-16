@@ -4,10 +4,12 @@ namespace BSM.Domain.Modules.BookModule.ValueObjects;
 
 public record AddressObject
 {
-    public string Street { get; init; }
-    public string District { get; init; }
-    public string Province { get; init; }
-    public string Country { get; init; }
+    public string Street { get; init; } = null!;
+    public string District { get; init; } = null!;
+    public string Province { get; init; } = null!;
+    public string Country { get; init; } = null!;
+    
+    private AddressObject() { }
     
     private AddressObject(string street, string district, string province, string country)
     {

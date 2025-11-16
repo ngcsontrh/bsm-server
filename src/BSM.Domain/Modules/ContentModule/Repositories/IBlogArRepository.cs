@@ -3,7 +3,7 @@ using BSM.Domain.Modules.ContentModule.Entities;
 
 namespace BSM.Domain.Modules.ContentModule.Repositories;
 
-public interface IEventRepository : IRepositoryBase<EventEntity>
+public interface IBlogArRepository : IArRepository<BlogEntity>
 {
     
 }
