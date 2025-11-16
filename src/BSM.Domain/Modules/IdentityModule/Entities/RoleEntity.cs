@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace BSM.Domain.Modules.IdentityModule.Entities;
 
-public class RoleEntity : IdentityRole<Guid>, IAuditable
+public class RoleEntity : IdentityRole<Guid>, IAuditable, IAggregateRoot, IEntityBase
 {
     public DateTime CreatedAt { get; private set; }
     public Guid? CreatorId { get; private set; }
