@@ -1,0 +1,16 @@
+﻿<Project Sdk="Aspire.AppHost.Sdk/13.0.0">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <UserSecretsId>113adffa-6141-46b9-89e2-6d4da29d05ff</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.JavaScript" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\server\BSM.Server\BSM.Server.csproj" />
+  </ItemGroup>
+
+</Project>

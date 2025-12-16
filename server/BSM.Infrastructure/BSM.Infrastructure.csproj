@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\BSM.Domain\BSM.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

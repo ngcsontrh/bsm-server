@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/aspire/">
+    <Project Path="aspire/BSM.AppHost/BSM.AppHost.csproj" />
+    <Project Path="aspire/BSM.ServiceDefaults/BSM.ServiceDefaults.csproj" />
+  </Folder>
+  <Folder Name="/framework/">
+    <Project Path="framework/BSM.Framework/BSM.Framework.csproj" Id="779fa977-064a-4385-b22c-88d026fddd1c" />
+  </Folder>
+  <Folder Name="/server/">
+    <Project Path="server/BSM.Domain/BSM.Domain.csproj" />
+    <Project Path="server/BSM.Infrastructure/BSM.Infrastructure.csproj" />
+    <Project Path="server/BSM.Server/BSM.Server.csproj" />
+  </Folder>
+  <Folder Name="/solution/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+  </Folder>  
+</Solution>

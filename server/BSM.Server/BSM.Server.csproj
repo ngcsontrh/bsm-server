@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Scalar.AspNetCore" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\aspire\BSM.ServiceDefaults\BSM.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\..\framework\BSM.Framework\BSM.Framework.csproj" />
+    <ProjectReference Include="..\BSM.Infrastructure\BSM.Infrastructure.csproj" />  
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Coupons\CreateCoupon\" />
+    <Folder Include="Features\Inventories\ExportStock\" />
+    <Folder Include="Features\Orders\CreateOrder\" />
+    <Folder Include="Features\Orders\CancelOrder\" />
+  </ItemGroup>
+
+</Project>
