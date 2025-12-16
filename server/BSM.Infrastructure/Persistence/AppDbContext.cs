@@ -18,4 +18,5 @@ public class AppDbContext : DbContext
     public DbSet<CartItemEntity> CartItems { get; set; }
     public DbSet<StockImportEntity> StockImports { get; set; }
     public DbSet<StockExportEntity> StockExports { get; set; }
+    public DbSet<CustomerEntity> Customers { get; set; }
 }

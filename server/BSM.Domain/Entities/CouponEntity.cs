@@ -10,4 +10,5 @@ public class CouponEntity
     public DateTime ExpiryDate { get; set; }
     public string Description { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
+    public bool IsUsed { get; set; }
 }

@@ -13,8 +13,6 @@
   <ItemGroup>
     <Folder Include="Features\Coupons\CreateCoupon\" />
     <Folder Include="Features\Inventories\ExportStock\" />
-    <Folder Include="Features\Orders\CreateOrder\" />
-    <Folder Include="Features\Orders\CancelOrder\" />
   </ItemGroup>
 
 </Project>
