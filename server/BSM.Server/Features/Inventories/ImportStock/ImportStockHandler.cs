@@ -22,7 +22,7 @@ public class ImportStockHandler : IRequestHandler<ImportStockCommand, HandlerRes
     public async Task<HandlerResult> Handle(ImportStockCommand request, CancellationToken cancellationToken)
     {
         var currentUser = _httpContextAccessor.HttpContext?.User;
-        if (currentUser == null || !currentUser.IsInRole("ADMIN") || !currentUser.IsInRole("MANAGER"))
+        if (currentUser == null || (!currentUser.IsInRole("ADMIN") && !currentUser.IsInRole("MANAGER")))
         {
             return HandlerResult.Failure("Bạn không có quyền thực hiện thao tác này");
         }
