@@ -21,7 +21,7 @@ public class AddToCartHandler : IRequestHandler<AddToCartCommand, HandlerResult>
     public async Task<HandlerResult> Handle(AddToCartCommand request, CancellationToken cancellationToken)
     {
         var currentUser = _httpContextAccessor.HttpContext?.User;
-        if (currentUser == null)
+        if (currentUser == null || !currentUser.Identity!.IsAuthenticated)
         {
             return HandlerResult.Failure("Vui lòng đăng nhập để thực hiện thao tác này");
         }
